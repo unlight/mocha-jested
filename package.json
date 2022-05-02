@@ -16,7 +16,7 @@
     }
   },
   "scripts": {
-    "test": "npm run eslint && npm run test:r",
+    "test": "npm run tscheck && npm run eslint && npm run test:cov",
     "test:r": "node -r ts-node/register node_modules/mocha/bin/mocha src/*.spec.ts",
     "test:w": "npm run test:r -- --watch-files src --watch",
     "test:cov": "c8 --reporter text --exclude \"**/*.spec.ts\" --exclude \"**/testing/**\" npm run test:r -- --no-timeouts",
@@ -54,7 +54,6 @@
     "prettier": "^2.6.1",
     "reflect-metadata": "^0.1.13",
     "request": "^2.88.2",
-    "src": "link:./src",
     "ts-node": "^10.7.0",
     "tsconfig-paths": "^3.14.1",
     "tslib": "^2.3.1",

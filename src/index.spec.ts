@@ -33,4 +33,15 @@ describe('context', () => {
 
     expect(testContext.it.todo).toBe(testContext.it);
   });
+
+  it('expect', () => {
+    mocha.suite.on(EVENT_FILE_PRE_REQUIRE, function (context) {
+      testContext = context;
+    });
+
+    runner = mocha.run();
+
+    expect(typeof testContext.expect).toBe('function');
+    expect(testContext.expect).toBe(expect);
+  });
 });

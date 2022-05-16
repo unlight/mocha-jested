@@ -1,5 +1,5 @@
 import expect from 'expect';
-import Mocha from 'mocha';
+import Mocha, { Test } from 'mocha';
 import bddJestedInterface from './index';
 
 const { EVENT_FILE_PRE_REQUIRE } = Mocha.Suite.constants;
@@ -13,6 +13,7 @@ describe('context', () => {
   let testContext: Mocha.MochaGlobals;
   let runner: Mocha.Runner;
   beforeEach(() => {
+    testContext = undefined as any;
     mocha = new Mocha({ ui: 'mocha-jested' as any });
     mocha.addFile(require.resolve('./fixture.js'));
   });
@@ -44,4 +45,37 @@ describe('context', () => {
     expect(typeof testContext.expect).toBe('function');
     expect(testContext.expect).toBe(expect);
   });
+
+  describe('it.each', () => {
+    beforeEach(() => {
+      mocha.suite.on(EVENT_FILE_PRE_REQUIRE, function (context) {
+        testContext = context;
+      });
+
+      runner = mocha.run();
+    });
+
+    it('function', () => {
+      expect(typeof testContext.it.each).toBe('function');
+
+      testContext.it.each([
+        [1, 1, 2],
+        [2, 2, 4],
+      ])('sum %# %i', (a, b, expected) => {
+        expect(a + b).toBe(expected);
+      });
+    });
+
+    it('interpolate', () => {
+      testContext.it.each([
+        { a: 1, b: 1, expected: 2 },
+        { a: 2, b: 2, expected: 4 },
+      ])('add $a + $b', ({ a, b, expected }) => {
+        expect(a + b).toBe(expected);
+      });
+    });
+  });
+
+  it('each skip');
+  it('each only');
 });

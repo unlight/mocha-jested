@@ -1,5 +1,6 @@
 import Mocha from 'mocha';
 import Expect from 'expect';
+import { interpolateArray } from './jest-each';
 
 const { EVENT_FILE_PRE_REQUIRE } = Mocha.Suite.constants;
 const { bdd } = Mocha.interfaces;
@@ -12,6 +13,7 @@ declare module 'mocha' {
   }
   interface TestFunction {
     todo: (title: string) => Mocha.Test;
+    each: typeof testEach;
   }
 }
 
@@ -28,8 +30,21 @@ function bddJestedInterface(suite: Mocha.Suite) {
     context.beforeAll = context.before;
     context.afterAll = context.after;
     context.it.todo = context.it;
+    context.it.each = testEach;
     context.expect = expect;
   });
+}
+
+function testEach(table: any[]) {
+  const it = global.it;
+
+  return function (pattern: string, function_: (...args: any[]) => any) {
+    const testArray = interpolateArray(pattern, table);
+
+    for (const test of testArray) {
+      it(test.title, function_.bind(undefined, ...test.arguments));
+    }
+  };
 }
 
 export default bddJestedInterface;

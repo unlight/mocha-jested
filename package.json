@@ -27,10 +27,13 @@
     "tscheck:w": "npm run tscheck -- --watch",
     "prebuild": "rm -rf dist",
     "build": "run-p build:a:* && run-p build:b:* && run-s build:c:*",
-    "build:a:2": "npx tsup src/index.ts -d=dist/cjs --keep-names --platform=node --format=cjs --target=es2020 --sourcemap",
+    "build:a:2": "npx tsup src/index.ts -d=dist/cjs --keep-names --platform=node --format=cjs --target=es2020 --external=expect --sourcemap",
     "build:b:4": "echo {\"type\": \"commonjs\"} > dist/cjs/package.json",
     "build:c:1": "cp -fv README.md LICENSE dist",
     "build:c:2": "cat package.json | jq \"del(.type)\" >dist/package.json"
+  },
+  "dependencies": {
+    "pretty-format": "^28.1.0"
   },
   "peerDependencies": {
     "mocha": ">=8"

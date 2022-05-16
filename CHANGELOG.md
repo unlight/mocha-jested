@@ -1,3 +1,10 @@
+## [2.2.0](https://github.com/unlight/mocha-jested/compare/v2.1.0...v2.2.0) (2022-05-16)
+
+
+### Features
+
+* Test each ([bf87595](https://github.com/unlight/mocha-jested/commit/bf87595c9c053c9d8d6112892848b46b36ad4bad))
+
 ## [2.1.0](https://github.com/unlight/mocha-jested/compare/v2.0.0...v2.1.0) (2022-05-10)
 
 

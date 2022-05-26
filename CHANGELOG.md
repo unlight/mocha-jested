@@ -1,3 +1,10 @@
+## [2.3.0](https://github.com/unlight/mocha-jested/compare/v2.2.0...v2.3.0) (2022-05-26)
+
+
+### Features
+
+* jest spyOn ([8417394](https://github.com/unlight/mocha-jested/commit/8417394af5343b5f0baa19ec16241d91f418101a))
+
 ## [2.2.0](https://github.com/unlight/mocha-jested/compare/v2.1.0...v2.2.0) (2022-05-16)
 
 

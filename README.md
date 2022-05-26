@@ -7,6 +7,7 @@ Bring some jest API to mocha.
 - Hook `beforeAll` as `before`
 - Hook `afterAll` as `after`
 - `it(string)` as `it.todo(string)`
+- `it.each(table)`
 
 ## Install
 

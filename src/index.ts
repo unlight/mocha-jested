@@ -1,6 +1,7 @@
 import Mocha from 'mocha';
-import Expect from 'expect';
+import expect from 'expect';
 import { interpolateArray } from './jest-each';
+import { spyOn, fn, mocked } from 'jest-mock';
 
 const { EVENT_FILE_PRE_REQUIRE } = Mocha.Suite.constants;
 const { bdd } = Mocha.interfaces;
@@ -9,41 +10,47 @@ declare module 'mocha' {
   interface MochaGlobals {
     beforeAll: Mocha.HookFunction;
     afterAll: Mocha.HookFunction;
-    expect: typeof Expect;
+    expect: typeof expect;
+    spyOn: typeof spyOn;
+    jest: {
+      spyOn: typeof spyOn;
+      fn: typeof fn;
+      mocked: typeof mocked;
+    };
   }
   interface TestFunction {
     todo: (title: string) => Mocha.Test;
-    each: typeof testEach;
+    each: Function;
+  }
+  interface ExclusiveTestFunction {
+    each: Function;
   }
 }
-
-let expect: typeof Expect;
-try {
-  expect = require('expect');
-  // eslint-disable-next-line no-empty
-} catch {}
 
 function bddJestedInterface(suite: Mocha.Suite) {
   bdd(suite);
 
   suite.on(EVENT_FILE_PRE_REQUIRE, function (context) {
+    context.expect = expect;
     context.beforeAll = context.before;
     context.afterAll = context.after;
+    context.jest = { spyOn, fn, mocked };
+    context.spyOn = spyOn;
     context.it.todo = context.it;
-    context.it.each = testEach;
-    context.expect = expect;
+    context.it.each = createTestEach(context.it);
+    context.it.only['each'] = createTestEach(context.it.only);
   });
 }
 
-function testEach(table: any[]) {
-  const it = global.it;
+function createTestEach(it: Mocha.TestFunction | Function) {
+  return function testEach(table: any[]) {
+    return function (pattern: string, function_: (...args: any[]) => any) {
+      const testArray = interpolateArray(pattern, table);
 
-  return function (pattern: string, function_: (...args: any[]) => any) {
-    const testArray = interpolateArray(pattern, table);
-
-    for (const test of testArray) {
-      it(test.title, function_.bind(undefined, ...test.arguments));
-    }
+      for (const test of testArray) {
+        it(test.title, function_.bind(undefined, ...test.arguments));
+      }
+    };
   };
 }
 

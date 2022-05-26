@@ -74,8 +74,33 @@ describe('context', () => {
         expect(a + b).toBe(expected);
       });
     });
+
+    it('only each', () => {
+      expect(typeof testContext.it.only.each).toBe('function');
+    });
+
+    it('each skip', () => {});
   });
 
-  it('each skip');
-  it('each only');
+  describe('jest-mock', () => {
+    beforeEach(() => {
+      mocha.suite.on(EVENT_FILE_PRE_REQUIRE, function (context) {
+        testContext = context;
+      });
+
+      runner = mocha.run();
+    });
+
+    it('global jest', () => {
+      expect(testContext.jest).toBeDefined();
+    });
+
+    it('spyOn', () => {
+      expect(testContext.spyOn).toBeDefined();
+      expect(testContext.jest.spyOn).toBeDefined();
+      expect(
+        typeof testContext.jest.spyOn({ a: Function }, 'a').mockResolvedValue,
+      ).toBeDefined();
+    });
+  });
 });

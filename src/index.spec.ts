@@ -1,5 +1,5 @@
 import expect from 'expect';
-import Mocha, { Test } from 'mocha';
+import Mocha from 'mocha';
 import bddJestedInterface from './index';
 
 const { EVENT_FILE_PRE_REQUIRE } = Mocha.Suite.constants;

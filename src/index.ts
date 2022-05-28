@@ -38,7 +38,7 @@ function bddJestedInterface(suite: Mocha.Suite) {
     context.spyOn = spyOn;
     context.it.todo = context.it;
     context.it.each = createTestEach(context.it);
-    context.it.only['each'] = createTestEach(context.it.only);
+    context.it.only.each = createTestEach(context.it.only);
   });
 }
 

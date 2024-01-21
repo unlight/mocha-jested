@@ -1,3 +1,10 @@
+## [2.4.0](https://github.com/unlight/mocha-jested/compare/v2.3.0...v2.4.0) (2024-01-21)
+
+
+### Features
+
+* Add new dummy methods ([cc6ea69](https://github.com/unlight/mocha-jested/commit/cc6ea69a85f73b06bf0ce854c2d2ac353ddb8840)), closes [#3](https://github.com/unlight/mocha-jested/issues/3)
+
 ## [2.3.0](https://github.com/unlight/mocha-jested/compare/v2.2.0...v2.3.0) (2022-05-26)
 
 

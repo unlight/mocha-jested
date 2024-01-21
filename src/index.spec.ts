@@ -13,8 +13,11 @@ describe('context', () => {
   let testContext: Mocha.MochaGlobals;
   let runner: Mocha.Runner;
   beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     testContext = undefined as any;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     mocha = new Mocha({ ui: 'mocha-jested' as any });
+    // eslint-disable-next-line unicorn/prefer-module
     mocha.addFile(require.resolve('./fixture.js'));
   });
 
@@ -58,6 +61,7 @@ describe('context', () => {
     it('function', () => {
       expect(typeof testContext.it.each).toBe('function');
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       testContext.it.each([
         [1, 1, 2],
         [2, 2, 4],
@@ -67,6 +71,7 @@ describe('context', () => {
     });
 
     it('interpolate', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       testContext.it.each([
         { a: 1, b: 1, expected: 2 },
         { a: 2, b: 2, expected: 4 },
@@ -82,7 +87,7 @@ describe('context', () => {
     it('each skip', () => {});
   });
 
-  describe('jest-mock', () => {
+  describe('jest', () => {
     beforeEach(() => {
       mocha.suite.on(EVENT_FILE_PRE_REQUIRE, function (context) {
         testContext = context;
@@ -101,6 +106,14 @@ describe('context', () => {
       expect(
         typeof testContext.jest.spyOn({ a: Function }, 'a').mockResolvedValue,
       ).toBeDefined();
+    });
+
+    it('useFakeTimers', () => {
+      expect(typeof testContext.jest.useFakeTimers).toBe('function');
+    });
+
+    it('useRealTimers', () => {
+      expect(typeof testContext.jest.useRealTimers).toBe('function');
     });
   });
 });

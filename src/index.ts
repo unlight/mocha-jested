@@ -16,6 +16,8 @@ declare module 'mocha' {
       spyOn: typeof spyOn;
       fn: typeof fn;
       mocked: typeof mocked;
+      useFakeTimers: Function;
+      useRealTimers: Function;
     };
   }
   interface TestFunction {
@@ -34,11 +36,18 @@ function bddJestedInterface(suite: Mocha.Suite) {
     context.expect = expect;
     context.beforeAll = context.before;
     context.afterAll = context.after;
-    context.jest = { spyOn, fn, mocked };
+    context.jest = {
+      spyOn,
+      fn,
+      mocked,
+      useFakeTimers: Function.prototype,
+      useRealTimers: Function.prototype,
+    };
     context.spyOn = spyOn;
     context.it.todo = context.it;
     context.it.each = createTestEach(context.it);
     context.it.only.each = createTestEach(context.it.only);
+    context.test = context.it;
   });
 }
 

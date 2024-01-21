@@ -7,19 +7,21 @@
     "url": "https://github.com/unlight/mocha-jested/issues"
   },
   "homepage": "https://github.com/unlight/mocha-jested#readme",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
   "keywords": [
     "mocha",
     "jest",
     "mocha-ui"
   ],
   "license": "MIT",
-  "types": "./index.d.ts",
-  "main": "./cjs/index.js",
-  "exports": {
-    ".": {
-      "require": "./cjs/index.js"
-    }
-  },
   "scripts": {
     "test": "npm run tscheck && npm run eslint && npm run test:cov",
     "test:r": "node -r ts-node/register node_modules/mocha/bin/mocha src/*.spec.ts",
@@ -30,12 +32,7 @@
     "eslint:fix": "npm run eslint -- --fix",
     "tscheck": "tsc --noEmit",
     "tscheck:w": "npm run tscheck -- --watch",
-    "prebuild": "rm -rf dist",
-    "build": "run-p build:a:* && run-p build:b:* && run-s build:c:*",
-    "build:a:2": "npx tsup src/index.ts -d=dist/cjs --keep-names --platform=node --format=cjs --target=es2020 --external=expect --sourcemap",
-    "build:b:4": "echo {\"type\": \"commonjs\"} > dist/cjs/package.json",
-    "build:c:1": "cp -fv README.md LICENSE dist",
-    "build:c:2": "cat package.json | jq \"del(.type)\" >dist/package.json"
+    "build": "sh Taskfile build_pkgroll"
   },
   "peerDependencies": {
     "expect": ">=28",
@@ -66,6 +63,7 @@
     "jest-mock": ">=29",
     "mocha": "^10.0.0",
     "npm-run-all": "^4.1.5",
+    "pkgroll": "^2.0.1",
     "prettier": "^3.2.4",
     "reflect-metadata": "^0.2.1",
     "request": "^2.88.2",

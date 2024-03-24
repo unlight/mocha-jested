@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/unlight/mocha-jested/compare/v2.4.0...v2.4.1) (2024-03-24)
+
+
+### Bug Fixes
+
+* Minor fixing ([5b858ab](https://github.com/unlight/mocha-jested/commit/5b858ab4af00b374e83db58a1bcd9d0ccf25e9fe))
+
 ## [2.4.0](https://github.com/unlight/mocha-jested/compare/v2.3.0...v2.4.0) (2024-01-21)
 
 

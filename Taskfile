@@ -6,12 +6,13 @@ build_pkgroll() {
   set -x
   rm -rf dist
   mkdir dist
-  npx pkgroll --target=es2020
+  # https://esbuild.github.io/api/#target
+  pkgroll --target=es2020
   cp -f README.md dist
-  cat package.json | jq '.main = "./index.cjs"' | \
-    jq '.module = "./index.mjs"' | \
-    jq '.types = "./index.d.ts"' | \
-    jq '.exports.".".import = "./index.mjs"' | \
+  cat package.json | jq '.main = "./index.cjs"' |
+    jq '.module = "./index.mjs"' |
+    jq '.types = "./index.d.ts"' |
+    jq '.exports.".".import = "./index.mjs"' |
     jq '.exports.".".require = "./index.cjs"' \
       >dist/package.json
   set +x

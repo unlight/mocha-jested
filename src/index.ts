@@ -65,7 +65,9 @@ function createTestEach(it: Mocha.TestFunction | Function) {
 
 export default bddJestedInterface;
 
-// eslint-disable-next-line unicorn/prefer-module
-module.exports = bddJestedInterface;
-// eslint-disable-next-line unicorn/prefer-module, @typescript-eslint/no-unsafe-member-access
-module.exports.default = bddJestedInterface;
+if (module?.exports) {
+  // eslint-disable-next-line unicorn/prefer-module
+  module.exports = bddJestedInterface;
+  // eslint-disable-next-line unicorn/prefer-module, @typescript-eslint/no-unsafe-member-access
+  module.exports.default = bddJestedInterface;
+}

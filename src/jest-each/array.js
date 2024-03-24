@@ -48,7 +48,8 @@ function _interopRequireWildcard(obj, nodeInterop) {
     return cache.get(obj);
   }
   var newObj = {};
-  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+  var hasPropertyDescriptor =
+    Object.defineProperty && Object.getOwnPropertyDescriptor;
   for (var key in obj) {
     if (key !== 'default' && Object.prototype.hasOwnProperty.call(obj, key)) {
       var desc = hasPropertyDescriptor
@@ -86,10 +87,11 @@ function array(title, arrayTable) {
   if (isTemplates(title, arrayTable)) {
     return arrayTable.map((template, index) => ({
       arguments: [template],
-      title: (0, _interpolation.interpolateVariables)(title, template, index).replace(
-        ESCAPED_PLACEHOLDER_PREFIX,
-        PLACEHOLDER_PREFIX,
-      ),
+      title: (0, _interpolation.interpolateVariables)(
+        title,
+        template,
+        index,
+      ).replace(ESCAPED_PLACEHOLDER_PREFIX, PLACEHOLDER_PREFIX),
     }));
   }
 
@@ -112,22 +114,29 @@ const colToRow = col => [col];
 
 const formatTitle = (title, row, rowIndex) =>
   row
-    .reduce((formattedTitle, value) => {
-      const [placeholder] = getMatchingPlaceholders(formattedTitle);
-      const normalisedValue = normalisePlaceholderValue(value);
-      if (!placeholder) return formattedTitle;
-      if (placeholder === PRETTY_PLACEHOLDER)
-        return interpolatePrettyPlaceholder(formattedTitle, normalisedValue);
-      return util().format(formattedTitle, normalisedValue);
-    }, interpolateTitleIndex(interpolateEscapedPlaceholders(title), rowIndex))
+    .reduce(
+      (formattedTitle, value) => {
+        const [placeholder] = getMatchingPlaceholders(formattedTitle);
+        const normalisedValue = normalisePlaceholderValue(value);
+        if (!placeholder) return formattedTitle;
+        if (placeholder === PRETTY_PLACEHOLDER)
+          return interpolatePrettyPlaceholder(formattedTitle, normalisedValue);
+        return util().format(formattedTitle, normalisedValue);
+      },
+      interpolateTitleIndex(interpolateEscapedPlaceholders(title), rowIndex),
+    )
     .replace(new RegExp(JEST_EACH_PLACEHOLDER_ESCAPE, 'g'), PLACEHOLDER_PREFIX);
 
 const normalisePlaceholderValue = value =>
   typeof value === 'string'
-    ? value.replace(new RegExp(PLACEHOLDER_PREFIX, 'g'), JEST_EACH_PLACEHOLDER_ESCAPE)
+    ? value.replace(
+        new RegExp(PLACEHOLDER_PREFIX, 'g'),
+        JEST_EACH_PLACEHOLDER_ESCAPE,
+      )
     : value;
 
-const getMatchingPlaceholders = title => title.match(SUPPORTED_PLACEHOLDERS) || [];
+const getMatchingPlaceholders = title =>
+  title.match(SUPPORTED_PLACEHOLDERS) || [];
 
 const interpolateEscapedPlaceholders = title =>
   title.replace(ESCAPED_PLACEHOLDER_PREFIX, JEST_EACH_PLACEHOLDER_ESCAPE);
